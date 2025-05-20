@@ -236,10 +236,10 @@ def runApp():
         gui_utils.used_glyphs = list(font.getGlyphSet().keys())
         gui.root.config(cursor="")
 
-        #try:
-        from licence import li
-        li(gui.root)
-        #except Exception as e: pass
+        try:
+            from licence import li
+            li(gui.root)
+        except Exception as e: pass
 
         # gui.root.deiconify()
         # gui.root.overrideredirect(False) # desable update gui
