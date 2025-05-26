@@ -22,7 +22,7 @@ class Layer(Plugin):
 
     def gui(s, frame):
         s.outline = True
-        s.corner_join_limit = 150000
+        s.corner_join_limit = 160
         s.corner_join = 2
         gui.Slider(frame, layer=s, min=1, max=300, name='outline_width', ini=110 ).pack(anchor='w')
 

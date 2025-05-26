@@ -191,6 +191,9 @@ def duplicate_layer( g=None, refresh=True ):
 
         for name, val in utils.get_layer_attr( l_old ):
             setattr(layer, name, val)
+
+        print('###',layer.active)
+        if not layer.active : layer.toggle(refresh=False, unify=True)
         layer.gui( gui.gui_para.content )
         select_layer(layer)
         if refresh : gui.refresh()

@@ -39,9 +39,8 @@ class Plugin(object):
         s.gui_button.bind("<Enter>", lambda _: s.enter_btn())
         s.gui_button.bind("<Leave>", lambda _: s.leave_btn())
 
-
-    def toggle(s, refresh=True):
-        s.active = not s.active
+    def toggle(s, refresh = True, unify = False):
+        if not unify : s.active = not s.active
         s.gui_button.state(['!disabled' if s.active else 'disabled'])
         s.gui_toggle.toggle(s.active)
         s.gui_drag.toggle(s.active)

@@ -441,7 +441,7 @@ def show_about_menu(root):
     label.update()
     label.pack(padx=0, pady=0, ipadx=0, ipady=0)
     with open(path('files/about.html')) as f:
-        HTMLLabel(frame, html=f.read(), highlightbackground='white', background="#ffffff", takefocus=False, height=25 ).pack(padx=0, pady=0, ipadx=0, ipady=0)
+        HTMLLabel(frame, html=f.read(), highlightbackground='white', background="#ffffff", takefocus=False, height=30 ).pack(padx=0, pady=0, ipadx=0, ipady=0)
 
     top.bind('<Escape>', lambda event=None: top.destroy() )
     top.bind('<Return>', lambda event=None: top.destroy() )
