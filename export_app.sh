@@ -42,7 +42,7 @@ dist/LinuxVenv/bin/python3 main.py
 
 # delete the playsound stuff => bug on Arch Linux ?
 
-switch hook/tkinterdnd2.py
+switch hook/tkinterdnd2.py to first one
 
 sudo linux-venv/bin/pyinstaller -n "LivingPath.spec" --onefile --clean --add-data="files:files" --splash="files/splash.jpg" --additional-hooks-dir="hooks" --hidden-import=PIL._tkinter_finder --collect-all "hyperglot" -p "."   ./main.py
 

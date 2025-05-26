@@ -209,7 +209,8 @@ def duplicate_group():
 
 def main():
 
-    try: # test if LivingPath is allready running (bugfix cahn-hillard on MAC )
+    try: # test if LivingPath is allready running : bugfix cahn-hillard(torch lib) on MAC
+        global si
         si = utils.SingleInstance()
     except e:
         print("SingleInstance check error ",e)
@@ -237,7 +238,11 @@ def runApp():
 
         gui_utils.used_glyphs = list(font.getGlyphSet().keys())
         gui.root.config(cursor="")
-        utils.check_time(gui.root)
+
+        try:
+            from licence import li
+            li(gui.root)
+        except Exception as e: pass
 
         # gui.root.deiconify()
         # gui.root.overrideredirect(False) # desable update gui

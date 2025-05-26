@@ -233,11 +233,3 @@ class SingleInstance:
         except Exception as err:
             # logger.exception(err)
             raise # for debugging porpuses, do not raise it on production
-
-
-
-
-############## check time ######################################################
-
-def check_time(root):
-    return None
