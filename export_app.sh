@@ -4,7 +4,11 @@
 
 # pyinstaller -n "app" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --add-data="plugins;plugins" --additional-hooks-dir=. --additional-hooks-dir="./plugins" -p ".;./plugins"  --collect-submodules="plugins" ./main.py
 
-pyinstaller -n "LivingPath.spec" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --additional-hooks-dir="hooks" --splash="files/splash.jpg" --collect-all "hyperglot" -p "." ./main.py
+# first time :
+pyinstaller "LivingPath" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --additional-hooks-dir="hooks" --splash="files/splash.jpg" --collect-all "hyperglot"
+# then :
+pyinstaller LivingPath.spec
+
 
 # on MAC OS & unix systems you can write :
 # files:files
@@ -24,7 +28,6 @@ pyinstaller -n "LivingPath.spec" --noconfirm --windowed --icon='files/logo.icns'
 
 # ---- linux -------------------------------
 
-# on windows Ubuntu VM : run "WSL" in power shell
 apt get python3.12-full
 python3 -m venv dist/LinuxVenv
 sudo dist/LinuxVenv/bin/pip install -r requirements.txt
