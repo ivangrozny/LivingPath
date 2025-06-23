@@ -21,11 +21,8 @@ pyinstaller -n "LivingPath" --onefile --windowed --clean --icon="files/logo.ico"
 source livingpath/bin/activate
 # first time :
 pyinstaller -n "LivingPath.spec" --noconfirm --windowed --icon='files/logo.icns' --add-data="files:files" --additional-hooks-dir="hooks" --collect-all "hyperglot" -p "." ./main.py
-
-# from ./files/Livingpath-mac.spec
-# move LivingPath.spec
 # then :
-# pyinstaller ./files/Livingpath-mac.spec
+pyinstaller  --noconfirm "LivingPath.spec"
 
 
 # ---- linux -------------------------------
