@@ -13,9 +13,9 @@ def pen_to_img(pen, font, g): # has to be FreeTypePen
         return Image.new("L", (500, 1000),255)
     s = 1/ (font['head'].unitsPerEm /1000) # some font are more than 1000 u/em (and main unreachable)
 
-    boundsPen = BoundsPen( font.getGlyphSet() )
-    gs[g].draw(boundsPen)
-    print("[[[   ", int(gs[g].width*s), gs[g].lsb, gs[g].tsb, g, boundsPen.bounds  )
+    # boundsPen = BoundsPen( font.getGlyphSet() )
+    # gs[g].draw(boundsPen)
+    # print("[[[   ", int(gs[g].width*s), gs[g].lsb, gs[g].tsb, g, boundsPen.bounds  )
 
     m = utils.margin
     lsb =  - get_lsb(gs,g)

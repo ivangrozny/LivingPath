@@ -284,8 +284,8 @@ def draw_rules(img, g, font): # draw visual beziers with PIL
     lineLabel(draw, (70,asc-xheight, width+m+mm,asc-xheight ), c, 2, 'xheight')
     lineLabel(draw, (70,m, width+m+mm,m), c, 2, 'ascender')
 
-    lineLabel(draw, (width+m,m-mm, width+m,img.height), c, 2, str(int(width*s)), vert=img.height)
-    lineLabel(draw, (m,m-mm, m,img.height), c, 2, '0', vert=img.height)
+    lineLabel(draw, (width+m,m-mm, width+m,img.height-70), c, 2, str(int(width*s)), vert=img.height)
+    lineLabel(draw, (m,m-mm, m,img.height-70), c, 2, '0', vert=img.height)
 
     return img
 
