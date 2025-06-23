@@ -1,3 +1,4 @@
+
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
 
@@ -54,4 +55,30 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=['files\\logo.ico'],
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='LivingPath',
+)
+app = BUNDLE(
+    coll,
+    name='LivingPath.app',
+    icon='files/logo.icns',
+    bundle_identifier=None,
+    version = 1.03,
+    info_plist = {
+        'NSPrincipalClass': 'NSApplication',
+        'CFBundleDocumentTypes': [{
+              'CFBundleTypeName': 'LivingPath File',
+              'CFBundleTypeIconFile': 'files/logo.icns',
+              'LSItemContentTypes': ['public.lvp'],
+              'LSHandlerRank': 'Owner'
+        }]
+    }
 )
