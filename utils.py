@@ -5,7 +5,7 @@ import contextlib
 import freetype as ft # freetype-py
 import numpy as np
 import uharfbuzz as hb
-margin = 200
+margin = 100
 
 def load_plugins():
     plugins, names = [], []

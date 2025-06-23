@@ -103,12 +103,12 @@ def path_to_font(path, glyph, font, path_type="potrace"):
     if 'glyf' in font : pen = TTGlyphPen( gs )
     if 'CFF ' in font :
         X = font['CFF '].cff[0].Private.nominalWidthX if 'nominalWidthX' in font['CFF '].cff[0].Private.rawDict else 0
-        pen = T2CharStringPen(gs[glyph].width - X, gs); # gliphWidth - nominalWidthX
+        pen = T2CharStringPen(gs[glyph].width - X, gs); # gliphWidth - nominalWidthX (does -X is usefull ?)
 
     s = font['head'].unitsPerEm /1000 # some font are more than 1000 u/em
-    tpen = TransformPen(pen, (s, 0, 0, -s, -utils.margin*s, font['OS/2'].usWinAscent))
+    tpen = TransformPen(pen, (s, 0, 0, -s, -utils.margin*s + path_utils.get_lsb(gs,glyph)*s, font['OS/2'].usWinAscent))
     if path_type == "potrace": path_to_pen(path,tpen)
-    if path_type == "array": array_to_pen(path,tpen)
+    if path_type == "array":  array_to_pen(path,tpen)
 
     # pprint.pprint(vars(gs[glyph]))
     if 'glyf' in font : font['glyf'][glyph] = pen.glyph(dropImpliedOnCurves=True)
@@ -273,7 +273,7 @@ def draw_rules(img, g, font): # draw visual beziers with PIL
     if hasattr(font['OS/2'], 'sxHeight') : xheight = font['OS/2'].sxHeight /s
     else : xheight = 4000
 
-    print("metrics :", asc, des, cap, xheight)
+    # print("metrics :", asc, des, cap, xheight)
 
     width = font.getGlyphSet()[g].width /s + params.letter_spacing
     m, mm = utils.margin, 35

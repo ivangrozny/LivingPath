@@ -1,6 +1,7 @@
 import freetype as ft # pip install freetype-py
 from fontTools.pens.freetypePen import FreeTypePen
 from fontTools.pens.transformPen import TransformPen
+from fontTools.pens.boundsPen import BoundsPen
 from PIL import Image, ImageOps
 import utils
 import pprint
@@ -11,13 +12,25 @@ def pen_to_img(pen, font, g): # has to be FreeTypePen
     if g not in gs : # garde fou, utile ? ou pas
         return Image.new("L", (500, 1000),255)
     s = 1/ (font['head'].unitsPerEm /1000) # some font are more than 1000 u/em (and main unreachable)
-    height = font['OS/2'].usWinAscent*s + font['OS/2'].usWinDescent*s + 2*utils.margin
-    width = gs[g].width*s + 2*utils.margin
+
+    boundsPen = BoundsPen( font.getGlyphSet() )
+    gs[g].draw(boundsPen)
+    print("[[[   ", int(gs[g].width*s), gs[g].lsb, gs[g].tsb, g, boundsPen.bounds  )
+
+    m = utils.margin
+    lsb =  - get_lsb(gs,g)
+    height = font['OS/2'].usWinAscent*s + font['OS/2'].usWinDescent*s + 2*m
+    width = ( gs[g].width + lsb )*s + 2*m
     try:  # garde fou, utile ? ou pas
-        img = pen.image(contain=False,width=width,height=height,transform=(s,0,0,s,utils.margin, font['OS/2'].usWinDescent*s +2*utils.margin))
+        img = pen.image(contain=True,width=width,height=height,transform=(s,0,0,s, m + lsb, font['OS/2'].usWinDescent*s +2*m))
     except e: return Image.new("L", (500, 1000),255)
     img = ImageOps.invert(img.getchannel('A'))
     return img
+
+def get_lsb(gs,g): # bugfix for Thai & Lao alphabets (got big negative lsb)
+    lsb = gs[g].lsb
+    if lsb > utils.margin : lsb = 0
+    return lsb
 # -------------------------------------------------------------------------------------------
 
 def ftoutline_contour(outline, layer, gs=None, offset=(1,0,0,1,0,0), opened=False, units=1 ):

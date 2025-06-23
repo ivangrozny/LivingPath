@@ -397,7 +397,7 @@ def setup_menubar():
     menu_items['New group'].add_command(label='Duplicate group',command=main.duplicate_group,accelerator=ctrl+'+Shift+G')
     root.configure(menu=menubar)
 #----------------------------------------------------------------------------------
-gs_flags = ('all','lowercase','uppercase','digits','punctuation')
+gs_flags = ('all','custom...','basic latin','lowercase','uppercase','digits','punctuation' )
 def export_font(): # gui ask family name and style
     result = {
     'Font family name': main.font_name + ' LivingPath',

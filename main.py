@@ -11,7 +11,7 @@ import copy
 
 plugins, names, groups = [], [], []
 layer, over_layer = None, None
-current_glyph = 'g' # 本' # 'dkshade'
+current_glyph = 'ັ ' # 本' # 'dkshade'
 root = None
 font = ttLib.TTFont(utils.path("files/1.otf"), recalcBBoxes=True)
 font_origin = ttLib.TTFont(utils.path("files/1.otf"), recalcBBoxes=True)
@@ -127,17 +127,16 @@ def process_font_export(path='', name=None, style=None, flag='all'):
     gs = font.getGlyphSet()
     if "all" in flag : # filter GLYPH SETS
         pass
-    elif any(x in flag for x in gui.gs_flags):
-        glyphs = ""
-        if "punctuation" in flag : glyphs += string.punctuation
-        if "digits" in flag : glyphs += string.digits
-        if "uppercase" in flag : glyphs += string.ascii_uppercase
-        if "lowercase" in flag : glyphs += string.ascii_lowercase
-        gs = glyphs
-        isString = True
     else:
+        glyphs = ""
+        if "punctuation" in flag : flag = flag.replace("punctuation","") + string.punctuation
+        if "digits" in flag :      flag = flag.replace("digits","")      + string.digits
+        if "uppercase" in flag :   flag = flag.replace("uppercase","")   + string.ascii_uppercase
+        if "lowercase" in flag :   flag = flag.replace("lowercase","")   + string.ascii_lowercase
+        if "basic latin" in flag : flag = flag.replace("basic latin","") + string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         gs = flag
         isString = True
+        print(flag)
 
     text_to_font(gs, font, char_to_glyph=isString, title="Export font")
 

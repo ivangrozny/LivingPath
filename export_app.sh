@@ -5,9 +5,9 @@
 # pyinstaller -n "app" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --add-data="plugins;plugins" --additional-hooks-dir=. --additional-hooks-dir="./plugins" -p ".;./plugins"  --collect-submodules="plugins" ./main.py
 
 # first time :
-pyinstaller "LivingPath" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --additional-hooks-dir="hooks" --splash="files/splash.jpg" --collect-all "hyperglot"
-# then :
-pyinstaller LivingPath.spec
+pyinstaller -n "LivingPath" --onefile --windowed --clean --icon='files/logo.ico' --add-data="files;files" --additional-hooks-dir="hooks" --splash="files/splash.jpg" --collect-all "hyperglot" -p "." ./main.py
+# then : ( ne marche pas )
+# pyinstaller LivingPath.spec
 
 
 # on MAC OS & unix systems you can write :
@@ -23,7 +23,12 @@ pyinstaller LivingPath.spec
 
 
 source livingpath/bin/activate
-pyinstaller -n "LivingPath.spec" --noconfirm --windowed --icon='files/logo.icns' --add-data="files:files" --additional-hooks-dir="hooks" --collect-all "hyperglot" -p "." ./main.py
+# first time :
+# pyinstaller -n "LivingPath.spec" --noconfirm --windowed --icon='files/logo.icns' --add-data="files:files" --additional-hooks-dir="hooks" --collect-all "hyperglot" -p "." ./main.py
+from ./files/Livingpath-mac.spec
+move LivingPath.spec
+# then :
+pyinstaller ./files/Livingpath-mac.spec
 
 
 # ---- linux -------------------------------
