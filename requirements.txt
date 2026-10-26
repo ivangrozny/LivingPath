@@ -9,7 +9,7 @@ numba==0.61.0
 numpy<2.2
 opencv_contrib_python==4.11.0.86
 perlin_numpy==0.0.1
-Pillow==11.1.0
+Pillow
 playsound3==2.5.2
 potracer==0.0.4
 pyautotrace==0.0.4
