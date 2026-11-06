@@ -1,6 +1,6 @@
-name: Build LivingPath (macOS Apple Silicon)
+name: Build LivingPath (macOS Intel)
 
-# À placer dans .github/workflows/build-livingpath-macos.yml
+# À placer dans .github/workflows/build-livingpath-macos-intel.yml
 on:
   workflow_dispatch:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15      # runner Apple Silicon (arm64)
+    runs-on: macos-15-intel  # runner Intel (x86_64), dernier runner Intel de GitHub
     steps:
       - uses: actions/checkout@v4
 
@@ -22,21 +22,29 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      # numba (couche OpenMP) a besoin de libomp.dylib, absent des wheels PyPI.
+      # On l'installe via Homebrew et on indique son dossier à PyInstaller.
+      - name: Installer libomp
+        run: |
+          brew install libomp
+          echo "DYLD_LIBRARY_PATH=$(brew --prefix libomp)/lib" >> "$GITHUB_ENV"
+
       # Le .spec du dépôt contient déjà toute la config (datas, hooks,
       # collect_all hyperglot, icône, .app) : on ne passe aucune autre option.
       - name: Build PyInstaller
-        run: python -m PyInstaller --noconfirm --clean LivingPath-mac.spec
+        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
 
       - name: Vérifier l'architecture
         run: |
           ls dist
-          lipo -archs dist/LivingPath.app/Contents/MacOS/LivingPath   # attendu : arm64
+          find dist/LivingPath.app -name 'libomp*' || true   # doit lister libomp.dylib
+          lipo -archs dist/LivingPath.app/Contents/MacOS/LivingPath   # attendu : x86_64
 
       # ditto préserve la structure du .app (un zip classique peut la casser)
       - name: Compresser le .app
-        run: ditto -c -k --keepParent dist/LivingPath.app LivingPath-macos-arm64.zip
+        run: ditto -c -k --keepParent dist/LivingPath.app LivingPath-macos-intel.zip
 
       - uses: actions/upload-artifact@v4
         with:
-          name: LivingPath-macos-arm64
-          path: LivingPath-macos-arm64.zip
+          name: LivingPath-macos-intel
+          path: LivingPath-macos-intel.zip
