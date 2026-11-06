@@ -1,0 +1,42 @@
+name: Build LivingPath (macOS Apple Silicon)
+
+# À placer dans .github/workflows/build-livingpath-macos.yml
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: macos-14      # runner Apple Silicon (arm64)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      # Le .spec du dépôt contient déjà toute la config (datas, hooks,
+      # collect_all hyperglot, icône, .app) : on ne passe aucune autre option.
+      - name: Build PyInstaller
+        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
+
+      - name: Vérifier l'architecture
+        run: |
+          ls dist
+          lipo -archs dist/LivingPath.app/Contents/MacOS/LivingPath   # attendu : arm64
+
+      # ditto préserve la structure du .app (un zip classique peut la casser)
+      - name: Compresser le .app
+        run: ditto -c -k --keepParent dist/LivingPath.app LivingPath-macos-arm64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingPath-macos-arm64
+          path: LivingPath-macos-arm64.zip
