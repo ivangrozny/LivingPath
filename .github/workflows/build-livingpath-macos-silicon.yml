@@ -32,7 +32,7 @@ jobs:
       # Le .spec du dépôt contient déjà toute la config (datas, hooks,
       # collect_all hyperglot, icône, .app) : on ne passe aucune autre option.
       - name: Build PyInstaller
-        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
+        run: python -m PyInstaller --noconfirm --clean LivingPath-mac.spec
 
       - name: Vérifier l'architecture
         run: |
