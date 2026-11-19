@@ -1,0 +1,32 @@
+name: Build LivingPath (Windows)
+
+# À placer dans .github/workflows/build-livingpath-windows.yml
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Build PyInstaller
+        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
+
+      # GitHub zippe automatiquement le contenu de dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingPath-windows
+          path: dist/
