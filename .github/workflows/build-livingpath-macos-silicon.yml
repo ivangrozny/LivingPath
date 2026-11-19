@@ -1,4 +1,4 @@
-name: Build LivingPath (macOS Apple Silicon)
+name: Build LivingPath (macOS Silicon)
 
 # À placer dans .github/workflows/build-livingpath-macos.yml
 on:

@@ -1,6 +1,5 @@
-name: Build LivingPath (macOS Apple Silicon) + appTest
+name: Build LivingPath (macOS Silicon) + appTest
 
-# À placer dans .github/workflows/build-livingpath-macos.yml
 on:
   workflow_dispatch:
   push:
@@ -32,13 +31,43 @@ jobs:
       # Le .spec du dépôt contient déjà toute la config (datas, hooks,
       # collect_all hyperglot, icône, .app) : on ne passe aucune autre option.
       - name: Build PyInstaller
-        run: python -m PyInstaller --noconfirm --clean LivingPath-mac.spec
+        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
 
       - name: Vérifier l'architecture
         run: |
           ls dist
           find dist/LivingPath.app -name 'libomp*' || true   # doit lister libomp.dylib
           lipo -archs dist/LivingPath.app/Contents/MacOS/LivingPath   # attendu : arm64
+
+      # Test de lancement : l'app doit rester ouverte 20 s sans planter.
+      # Toute la sortie console (erreurs d'import, tracebacks...) va dans app.log.
+      - name: Test de lancement
+        continue-on-error: true   # un échec n'empêche pas de récupérer l'app
+        run: |
+          set +e
+          ./dist/LivingPath.app/Contents/MacOS/LivingPath > app.log 2>&1 &
+          PID=$!
+          sleep 20
+          if kill -0 $PID 2>/dev/null; then
+            echo "OK : l'app tourne toujours après 20 s"
+            kill $PID
+            RESULT=0
+          else
+            wait $PID
+            RESULT=$?
+            echo "ECHEC : l'app s'est arrêtée (code $RESULT)"
+          fi
+          echo "----- sortie console -----"
+          cat app.log
+          exit $RESULT
+
+      - name: Sauvegarder le log du test
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LivingPath-test-log
+          path: app.log
+          if-no-files-found: ignore
 
       # ditto préserve la structure du .app (un zip classique peut la casser)
       - name: Compresser le .app
