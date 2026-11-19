@@ -300,7 +300,8 @@ def lineLabel(draw, coord, coul, width=2, txt='', vert=None):
 
 def draw_paths(path, img): # draw visual beziers with PIL
     if True : # params.display_points :
-        img = ImageMath.eval("a+157", a=img)
+        # img = ImageMath.eval("a+157", a=img) # unsafe with new PIL version
+        img = ImageMath.lambda_eval(lambda args: args["a"] + 157, a=img)
         img = img.convert('RGB')
         draw = ImageDraw.Draw(img)
         bleu = (0, 127, 255)
