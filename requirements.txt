@@ -24,3 +24,4 @@ skia-pathops
 seam-carving==1.1.0
 brotli==1.1.0
 tkhtmlview
+tqdm
