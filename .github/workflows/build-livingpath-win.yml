@@ -23,7 +23,7 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Build PyInstaller
-        run: python -m PyInstaller --noconfirm --clean LivingPath.spec
+        run: python -m PyInstaller --noconfirm --clean LivingPath-win.spec
 
       # GitHub zippe automatiquement le contenu de dist/
       - uses: actions/upload-artifact@v4
