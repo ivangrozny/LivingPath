@@ -6,14 +6,16 @@ from PIL import Image, ImageOps
 from tqdm import tqdm
 
 import platform
-if platform.system() == "Windows":
-    from scipy.fft import ifft2, fft2
-else :
+try:
+    if platform.system() == "Windows":
+        raise ImportError  # Windows utilise scipy
     import torch
-    global device
-    # device = torch.device('cpu')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+    USE_TORCH = True
+except ImportError:
+    from scipy.fft import ifft2, fft2
+    USE_TORCH = False
+print ("cahn hilliard plugin is using Torch lib : ", USE_TORCH)
 
 class Layer(Plugin):
     """
@@ -34,7 +36,7 @@ class Layer(Plugin):
         gui.Slider(frame, min=30, max=230, ini=127, layer=s, name='threshold').pack(anchor='nw', pady=(20,0))
     def run(s, img):
 
-        if platform.system() == "Windows": # numpy version
+        if not USE_TORCH: # numpy/scipy version
             originSize = img.size
             img = img.resize( (int(img.width*s.size), int(img.height*s.size)), Image.NEAREST)
 
